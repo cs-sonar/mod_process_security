@@ -331,6 +331,8 @@ static void * APR_THREAD_FUNC process_security_thread_handler(apr_thread_t *thre
     if (process_security_set_cap(r) < 0)
         apr_thread_exit(thread, HTTP_INTERNAL_SERVER_ERROR);
 
+	if (getuid() == 0) apr_thread_exit(thread, HTTP_INTERNAL_SERVER_ERROR);
+
     result = ap_run_handler(r);
 
     if (result == DECLINED)
